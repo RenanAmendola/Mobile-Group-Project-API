@@ -1,10 +1,13 @@
 package Mobile_Senac.RideShare.service;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import Mobile_Senac.RideShare.model.Usuario;
@@ -23,7 +26,8 @@ public class Usuario_Service {
 		if(UsuRe.findByEmail(usuario.getEmail())
 				.isPresent())
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O usuario ja existe!",null);
-		
+
+			usuario.setSenha(criptografarSenha(usuario.getSenha()));
 		
 		return Optional.of(UsuRe.save(usuario));										
 	}
@@ -50,7 +54,9 @@ public class Usuario_Service {
             existingUsuario.setCPF(updatedUsuarioData.getCPF());
             existingUsuario.setFoto(updatedUsuarioData.getFoto());
          
+			existingUsuario.setSenha(criptografarSenha(updatedUsuarioData.getSenha()));
             Usuario updatedUsuario = UsuRe.save(existingUsuario);
+
             return Optional.of(updatedUsuario);
         } else {
            
@@ -70,7 +76,8 @@ public class Usuario_Service {
 				UsuarioLogin.get().setSobrenome(Usuario.get().getSobrenome());
 				UsuarioLogin.get().setTelefone(Usuario.get().getTelefone());
 				UsuarioLogin.get().setEmail(Usuario.get().getEmail());
-				UsuarioLogin.get().setSenha(Usuario.get().getSenha());
+				UsuarioLogin.get().setToken(gerarBasicToken(UsuarioLogin.get().getEmail(),
+				UsuarioLogin.get().getSenha()));
 				
 				return UsuarioLogin;
 			}
@@ -84,5 +91,20 @@ public class Usuario_Service {
 	private boolean compararSenhas(String senhaDigitada, String senhaBanco) {
 		return senhaDigitada.equals(senhaBanco);			
 	}
+
+
+	private String gerarBasicToken(String email, String password) {
+		String estrutura = email + ":" + password;
+		byte[] estruturaBase64 = Base64.getEncoder().encode(estrutura.getBytes(StandardCharsets.US_ASCII));
+		return "basic " + new String(estruturaBase64, StandardCharsets.US_ASCII);
+	}
+
+	private String criptografarSenha(String senha) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String senhaEncoder = encoder.encode(senha);
+		
+		return senhaEncoder;
+	}
+	
 
 }
