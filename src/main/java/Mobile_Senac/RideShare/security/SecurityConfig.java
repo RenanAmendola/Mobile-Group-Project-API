@@ -21,21 +21,34 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/Usuario/all").permitAll()
+
                 .requestMatchers("/Usuario/logar").permitAll()
                 .requestMatchers("/Usuario/cadastrar").permitAll()
+
+
+
+/* 
+                .requestMatchers("/Rota/adicionar").permitAll()
+                .requestMatchers("/Rota").permitAll()
+                .requestMatchers("/Rota/{id}").permitAll()
+                .requestMatchers("/Rota/motorista/{id}").permitAll()
+                .requestMatchers("/Rota/atualizar").permitAll()
+                .requestMatchers("/historico").permitAll()
+                .requestMatchers("/historico/criar_historico").permitAll()
+                .requestMatchers("/historico/{id}").permitAll()
+                .requestMatchers("/Usuario/all").permitAll()
                 .requestMatchers("/Usuario/atualizar").permitAll()
                 .requestMatchers("/Carro/cadastrar").permitAll()
                 .requestMatchers("/Carro/{id}").permitAll()
                 .requestMatchers("/Carro/all").permitAll()
                 .requestMatchers("/Carro/atualizar").permitAll()
                 .requestMatchers("/Carro/deletar/{id}").permitAll()
-                .requestMatchers("/Endereco/all").permitAll()  /*check */
-                .requestMatchers("/Endereco/usuario/{idUsuario}").permitAll()   /*check */
-                .requestMatchers("/Endereco/cadastrar").permitAll() /*check */
-                .requestMatchers("/Endereco/atualizar").permitAll() /*check */
-                .requestMatchers("/Endereco/delete/{id}").permitAll() /*check */
-                .requestMatchers("/Endereco/{id}").permitAll() /*check */
+                .requestMatchers("/Endereco/all").permitAll()  
+                .requestMatchers("/Endereco/usuario/{idUsuario}").permitAll()   
+                .requestMatchers("/Endereco/cadastrar").permitAll() 
+                .requestMatchers("/Endereco/atualizar").permitAll() 
+                .requestMatchers("/Endereco/delete/{id}").permitAll() 
+                .requestMatchers("/Endereco/{id}").permitAll() */
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
