@@ -34,7 +34,7 @@ public class Usuario_Endereco {
     private int numero;
 
     @NotNull
-    @Digits(integer = 5, fraction = 0)
+    @Digits(integer = 9, fraction = 0)
     private long cep;
 
     @NotNull

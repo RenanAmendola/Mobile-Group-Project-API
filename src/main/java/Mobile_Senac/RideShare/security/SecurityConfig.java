@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -27,7 +29,7 @@ public class SecurityConfig {
 
 
 
-/* 
+
                 .requestMatchers("/Rota/adicionar").permitAll()
                 .requestMatchers("/Rota").permitAll()
                 .requestMatchers("/Rota/{id}").permitAll()
@@ -38,6 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/historico/{id}").permitAll()
                 .requestMatchers("/Usuario/all").permitAll()
                 .requestMatchers("/Usuario/atualizar").permitAll()
+                .requestMatchers("/Usuario/{id}").permitAll()
                 .requestMatchers("/Carro/cadastrar").permitAll()
                 .requestMatchers("/Carro/{id}").permitAll()
                 .requestMatchers("/Carro/all").permitAll()
@@ -48,7 +51,7 @@ public class SecurityConfig {
                 .requestMatchers("/Endereco/cadastrar").permitAll() 
                 .requestMatchers("/Endereco/atualizar").permitAll() 
                 .requestMatchers("/Endereco/delete/{id}").permitAll() 
-                .requestMatchers("/Endereco/{id}").permitAll() */
+                .requestMatchers("/Endereco/{id}").permitAll() 
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -57,6 +60,19 @@ public class SecurityConfig {
             );
 
         return http.build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**") // Permite CORS em todos os endpoints
+                        .allowedOrigins("*") // Permite requisições de qualquer origem
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
+                        .allowedHeaders("*"); // Cabeçalhos permitidos
+            }
+        };
     }
 
     @Bean

@@ -49,7 +49,6 @@ public class Usuario {
 
     private String matricula ;
 
-    @NotNull
     @Size(min = 5)
     private String foto;
 

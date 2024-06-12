@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import Mobile_Senac.RideShare.model.Usuario;
@@ -27,7 +26,6 @@ public class Usuario_Service {
 				.isPresent())
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O usuario ja existe!",null);
 
-			usuario.setSenha(criptografarSenha(usuario.getSenha()));
 		
 		return Optional.of(UsuRe.save(usuario));										
 	}
@@ -54,7 +52,7 @@ public class Usuario_Service {
             existingUsuario.setCPF(updatedUsuarioData.getCPF());
             existingUsuario.setFoto(updatedUsuarioData.getFoto());
          
-			existingUsuario.setSenha(criptografarSenha(updatedUsuarioData.getSenha()));
+			existingUsuario.setSenha(updatedUsuarioData.getSenha());
             Usuario updatedUsuario = UsuRe.save(existingUsuario);
 
             return Optional.of(updatedUsuario);
@@ -99,12 +97,6 @@ public class Usuario_Service {
 		return "basic " + new String(estruturaBase64, StandardCharsets.US_ASCII);
 	}
 
-	private String criptografarSenha(String senha) {
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		String senhaEncoder = encoder.encode(senha);
-		
-		return senhaEncoder;
-	}
 	
 
 }
