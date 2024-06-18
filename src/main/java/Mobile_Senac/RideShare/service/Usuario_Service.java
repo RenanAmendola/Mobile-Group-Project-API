@@ -74,6 +74,10 @@ public class Usuario_Service {
 				UsuarioLogin.get().setSobrenome(Usuario.get().getSobrenome());
 				UsuarioLogin.get().setTelefone(Usuario.get().getTelefone());
 				UsuarioLogin.get().setEmail(Usuario.get().getEmail());
+				UsuarioLogin.get().setTipo(Usuario.get().getTipo());
+				UsuarioLogin.get().setCPF(Usuario.get().getCPF());
+				UsuarioLogin.get().setMatricula(Usuario.get().getMatricula());
+				UsuarioLogin.get().setFoto(Usuario.get().getFoto());
 				UsuarioLogin.get().setToken(gerarBasicToken(UsuarioLogin.get().getEmail(),
 				UsuarioLogin.get().getSenha()));
 				
@@ -83,7 +87,6 @@ public class Usuario_Service {
 		
 		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario ou senha invalido!", null);
 	}
-	
 
 	
 	private boolean compararSenhas(String senhaDigitada, String senhaBanco) {
